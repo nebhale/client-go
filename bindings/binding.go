@@ -18,11 +18,12 @@ package bindings
 
 import (
 	"fmt"
-	"github.com/k8s-service-bindings/client-go/internal"
 	"os"
 	"path"
 	"path/filepath"
 	"strings"
+
+	"github.com/nebhale/client-go/internal"
 )
 
 // Provider is the key for the provider of a binding.

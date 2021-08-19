@@ -18,9 +18,10 @@ package bindings_test
 
 import (
 	"bytes"
-	"github.com/k8s-service-bindings/client-go/bindings"
 	"path/filepath"
 	"testing"
+
+	"github.com/nebhale/client-go/bindings"
 )
 
 func TestGet(t *testing.T) {

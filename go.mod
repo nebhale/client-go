@@ -1,4 +1,4 @@
-module github.com/k8s-service-bindings/client-go
+module github.com/nebhale/client-go
 
 go 1.16
 

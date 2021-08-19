@@ -17,8 +17,9 @@
 package internal_test
 
 import (
-	"github.com/k8s-service-bindings/client-go/internal"
 	"testing"
+
+	"github.com/nebhale/client-go/internal"
 )
 
 func TestIsValidSecretKey_Valid(t *testing.T) {

@@ -19,9 +19,10 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/jackc/pgx/v4"
-	"github.com/k8s-service-bindings/client-go/bindings"
 	"os"
+
+	"github.com/jackc/pgx/v4"
+	"github.com/nebhale/client-go/bindings"
 )
 
 func main() {

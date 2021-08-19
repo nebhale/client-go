@@ -1,7 +1,7 @@
 # client-go <!-- omit in toc -->
 
 [![Tests](https://github.com/nebhale/client-go/workflows/Tests/badge.svg?branch=main)](https://github.com/nebhale/client-go/actions/workflows/tests.yaml)
-[![GoDoc](https://godoc.org/github.com/nebhale/client-go?status.svg)](https://godoc.org/nebhale/client-go)
+[![GoDoc](https://godoc.org/github.com/nebhale/client-go?status.svg)](https://godoc.org/github.com/nebhale/client-go)
 [![Go Report Card](https://goreportcard.com/badge/github.com/nebhale/client-go)](https://goreportcard.com/report/github.com/nebhale/client-go)
 [![codecov](https://codecov.io/gh/nebhale/client-go/branch/main/graph/badge.svg)](https://codecov.io/gh/nebhale/client-go)
 
@@ -14,7 +14,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/jackc/pgx/v4"
-	"github.com/k8s-service-bindings/client-go/bindings"
+	"github.com/nebhale/client-go/bindings"
 	"os"
 )
 

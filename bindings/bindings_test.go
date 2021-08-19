@@ -17,10 +17,11 @@
 package bindings_test
 
 import (
-	"github.com/k8s-service-bindings/client-go/bindings"
 	"os"
 	"reflect"
 	"testing"
+
+	"github.com/nebhale/client-go/bindings"
 )
 
 func TestFrom_Invalid(t *testing.T) {
