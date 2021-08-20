@@ -159,6 +159,16 @@ func TestConfigTreeBinding_GetAsBytes_MissingKey(t *testing.T) {
 	}
 }
 
+func TestConfigTreeBinding_GetAsBytes_Directory(t *testing.T) {
+	b := bindings.ConfigTreeBinding{
+		Root: filepath.Join("testdata", "test-k8s"),
+	}
+
+	if _, ok := b.GetAsBytes(".hidden-data"); ok {
+		t.Errorf("does not identify directory")
+	}
+}
+
 func TestConfigTreeBinding_GetAsBytes_InvalidKey(t *testing.T) {
 	b := bindings.ConfigTreeBinding{
 		Root: filepath.Join("testdata", "test-k8s"),
