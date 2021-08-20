@@ -1,4 +1,4 @@
-# client-go <!-- omit in toc -->
+# client-go
 
 [![Tests](https://github.com/nebhale/client-go/workflows/Tests/badge.svg?branch=main)](https://github.com/nebhale/client-go/actions/workflows/tests.yaml)
 [![GoDoc](https://godoc.org/github.com/nebhale/client-go?status.svg)](https://godoc.org/github.com/nebhale/client-go)
