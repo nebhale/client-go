@@ -43,6 +43,12 @@ func TestFrom_Invalid(t *testing.T) {
 	}
 }
 
+func TestFrom_NotDirectory(t *testing.T) {
+	if !reflect.DeepEqual(bindings.From("testdata/additional-file"), []bindings.Binding{}) {
+		t.Errorf("did not create an empty Bindings")
+	}
+}
+
 func TestFrom_Exists(t *testing.T) {
 	if len(bindings.From("testdata")) != 3 {
 		t.Errorf("did not create proper number of bindings")
