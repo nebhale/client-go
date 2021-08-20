@@ -144,6 +144,16 @@ func TestConfigTreeBinding_GetAsBytes_MissingKey(t *testing.T) {
 	}
 }
 
+func TestConfigTreeBinding_GetAsBytes_InvalidKey(t *testing.T) {
+	b := bindings.ConfigTreeBinding{
+		Root: filepath.Join("testdata", "test-k8s"),
+	}
+
+	if _, ok := b.GetAsBytes("test^secret^key"); ok {
+		t.Errorf("does not identify invalid key")
+	}
+}
+
 func TestConfigTreeBinding_GetAsBytes_ValidKey(t *testing.T) {
 	b := bindings.ConfigTreeBinding{
 		Root: filepath.Join("testdata", "test-k8s"),
@@ -176,6 +186,19 @@ func TestMapBinding_GetAsBytes_MissingKey(t *testing.T) {
 
 	if _, ok := b.GetAsBytes("test-missing-key"); ok {
 		t.Errorf("does not identify missing key")
+	}
+}
+
+func TestMapBinding_GetAsBytes_InvalidKey(t *testing.T) {
+	b := bindings.MapBinding{
+		Name: "test-name",
+		Content: map[string][]byte{
+			"test-secret-key": []byte("test-secret-value\n"),
+		},
+	}
+
+	if _, ok := b.GetAsBytes("test^secret^key"); ok {
+		t.Errorf("does not identify invalid key")
 	}
 }
 

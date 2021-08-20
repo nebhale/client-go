@@ -24,6 +24,19 @@ import (
 	"github.com/nebhale/client-go/bindings"
 )
 
+func TestCached(t *testing.T) {
+	b := bindings.Cached([]bindings.Binding{
+		bindings.MapBinding{Name: "test-name-1"},
+		bindings.MapBinding{Name: "test-name-2"},
+	})
+
+	for _, c := range b {
+		if _, ok := c.(*bindings.CacheBinding); !ok {
+			t.Errorf("did not wrap with CacheBinding")
+		}
+	}
+}
+
 func TestFrom_Invalid(t *testing.T) {
 	if !reflect.DeepEqual(bindings.From("invalid"), []bindings.Binding{}) {
 		t.Errorf("did not create an empty Bindings")
