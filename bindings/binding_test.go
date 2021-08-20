@@ -34,7 +34,7 @@ func TestGet(t *testing.T) {
 
 	if v, ok := bindings.Get(b, "test-secret-key"); !ok {
 		t.Errorf("does not identify valid key")
-	} else if "test-secret-value" != v {
+	} else if v != "test-secret-value" {
 		t.Errorf("returned the wrong value")
 	}
 }
@@ -60,7 +60,7 @@ func TestGetProvider_ValidKey(t *testing.T) {
 
 	if v, ok := bindings.GetProvider(b); !ok {
 		t.Errorf("does not identify valid key")
-	} else if "test-provider-1" != v {
+	} else if v != "test-provider-1" {
 		t.Errorf("returned the wrong value")
 	}
 }
@@ -87,7 +87,7 @@ func TestGetType_ValidBinding(t *testing.T) {
 
 	if v, err := bindings.GetType(b); err != nil {
 		t.Errorf("does not identify valid binding")
-	} else if "test-type-1" != v {
+	} else if v != "test-type-1" {
 		t.Errorf("returned the wrong value")
 	}
 }
@@ -101,6 +101,21 @@ func TestCacheBinding_Uncached(t *testing.T) {
 	}
 	if s.getAsBytesCount != 1 {
 		t.Errorf("did not call delegate enough")
+	}
+}
+
+func TestCacheBinding_Missing(t *testing.T) {
+	s := &stubBinding{}
+	b := bindings.CacheBinding{Delegate: s}
+
+	if _, ok := b.GetAsBytes("test-unknown-key"); ok {
+		t.Errorf("does not identify invalid key")
+	}
+	if _, ok := b.GetAsBytes("test-unknown-key"); ok {
+		t.Errorf("does not identify invalid key")
+	}
+	if s.getAsBytesCount != 2 {
+		t.Errorf("does not call delegate enough")
 	}
 }
 
@@ -171,7 +186,7 @@ func TestConfigTreeBinding_GetName(t *testing.T) {
 		Root: filepath.Join("testdata", "test-k8s"),
 	}
 
-	if "test-k8s" != b.GetName() {
+	if b.GetName() != "test-k8s" {
 		t.Errorf("returned the wrong value")
 	}
 }
@@ -223,7 +238,7 @@ func TestMapBinding_GetName(t *testing.T) {
 		Content: map[string][]byte{},
 	}
 
-	if "test-name" != b.GetName() {
+	if b.GetName() != "test-name" {
 		t.Errorf("returned the wrong value")
 	}
 }
@@ -235,7 +250,12 @@ type stubBinding struct {
 
 func (s *stubBinding) GetAsBytes(key string) ([]byte, bool) {
 	s.getAsBytesCount++
-	return []byte{}, true
+
+	if key == "test-key" {
+		return []byte{}, true
+	}
+
+	return nil, false
 }
 
 func (s *stubBinding) GetName() string {

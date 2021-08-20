@@ -95,7 +95,7 @@ func TestFind_Valid(t *testing.T) {
 
 	if c, ok := bindings.Find(b, "test-name-1"); !ok {
 		t.Errorf("does not identify valid name")
-	} else if "test-name-1" != c.GetName() {
+	} else if c.GetName() != "test-name-1" {
 		t.Errorf("does not return valid binding")
 	}
 }
