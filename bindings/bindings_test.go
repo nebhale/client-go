@@ -83,7 +83,7 @@ func TestFromServiceBindingRoot_Set(t *testing.T) {
 	}
 }
 
-func TestFind_InValid(t *testing.T) {
+func TestFind_Invalid(t *testing.T) {
 	b := []bindings.Binding{
 		bindings.MapBinding{Name: "test-name-1"},
 	}
