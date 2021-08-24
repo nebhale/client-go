@@ -29,7 +29,7 @@ func main() {
 	b := bindings.FromServiceBindingRoot()
 	b = bindings.Filter(b, "postgresql")
 	if len(b) != 1 {
-		_, _ = fmt.Fprintf(os.Stderr, "Incorrect number of PostgreSQL drivers: %d\n", len(b))
+		_, _ = fmt.Fprintf(os.Stderr, "Incorrect number of PostgreSQL bindings: %d\n", len(b))
 		os.Exit(1)
 	}
 
