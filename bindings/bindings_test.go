@@ -273,6 +273,12 @@ func Test_Filter_Overload(t *testing.T) {
 				"provider": []byte("test-provider-2"),
 			},
 		},
+		bindings.MapBinding{
+			Name: "test-name-4",
+			Content: map[string][]byte{
+				"type":     []byte("test-type-2"),
+			},
+		},
 	}
 
 	if len(bindings.Filter(b, "test-type-1")) != 2 {
