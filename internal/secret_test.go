@@ -22,7 +22,7 @@ import (
 	"github.com/nebhale/client-go/internal"
 )
 
-func TestIsValidSecretKey_Valid(t *testing.T) {
+func Test_IsValidSecretKey_valid(t *testing.T) {
 	valid := []string{
 		"alpha",
 		"BRAVO",
@@ -41,7 +41,7 @@ func TestIsValidSecretKey_Valid(t *testing.T) {
 	}
 }
 
-func TestIsValidSecretKey_Invalid(t *testing.T) {
+func Test_IsValidSecretKey_invalid(t *testing.T) {
 	invalid := []string{
 		"lima^mike",
 	}

@@ -24,7 +24,7 @@ import (
 	"github.com/nebhale/client-go/bindings"
 )
 
-func TestCached(t *testing.T) {
+func Test_Cached(t *testing.T) {
 	b := bindings.Cached([]bindings.Binding{
 		bindings.MapBinding{Name: "test-name-1"},
 		bindings.MapBinding{Name: "test-name-2"},
@@ -37,31 +37,31 @@ func TestCached(t *testing.T) {
 	}
 }
 
-func TestFrom_Invalid(t *testing.T) {
-	if !reflect.DeepEqual(bindings.From("invalid"), []bindings.Binding{}) {
+func Test_From_Missing(t *testing.T) {
+	if !reflect.DeepEqual(bindings.From("missing"), []bindings.Binding{}) {
 		t.Errorf("did not create an empty Bindings")
 	}
 }
 
-func TestFrom_NotDirectory(t *testing.T) {
+func Test_From_File(t *testing.T) {
 	if !reflect.DeepEqual(bindings.From("testdata/additional-file"), []bindings.Binding{}) {
 		t.Errorf("did not create an empty Bindings")
 	}
 }
 
-func TestFrom_Exists(t *testing.T) {
+func Test_From_Valid(t *testing.T) {
 	if len(bindings.From("testdata")) != 3 {
 		t.Errorf("did not create proper number of bindings")
 	}
 }
 
-func TestFromServiceBindingRoot_Unset(t *testing.T) {
+func Test_FromServiceBindingRoot_Unset(t *testing.T) {
 	if !reflect.DeepEqual(bindings.FromServiceBindingRoot(), []bindings.Binding{}) {
 		t.Errorf("did not create an empty Bindings")
 	}
 }
 
-func TestFromServiceBindingRoot_Set(t *testing.T) {
+func Test_FromServiceBindingRoot_Set(t *testing.T) {
 	old, ok := os.LookupEnv("SERVICE_BINDING_ROOT")
 	if err := os.Setenv("SERVICE_BINDING_ROOT", "testdata"); err != nil {
 		t.Errorf("unable to set SERVICE_BINDING_ROOT")
@@ -83,7 +83,7 @@ func TestFromServiceBindingRoot_Set(t *testing.T) {
 	}
 }
 
-func TestFind_Invalid(t *testing.T) {
+func Test_Find_Missing(t *testing.T) {
 	b := []bindings.Binding{
 		bindings.MapBinding{Name: "test-name-1"},
 	}
@@ -93,7 +93,7 @@ func TestFind_Invalid(t *testing.T) {
 	}
 }
 
-func TestFind_Valid(t *testing.T) {
+func Test_Find_Valid(t *testing.T) {
 	b := []bindings.Binding{
 		bindings.MapBinding{Name: "test-name-1"},
 		bindings.MapBinding{Name: "test-name-2"},
@@ -106,7 +106,7 @@ func TestFind_Valid(t *testing.T) {
 	}
 }
 
-func TestFilter_Empty(t *testing.T) {
+func Test_Filter_None(t *testing.T) {
 	b := []bindings.Binding{
 		bindings.MapBinding{
 			Name: "test-name-1",
@@ -118,90 +118,25 @@ func TestFilter_Empty(t *testing.T) {
 		bindings.MapBinding{
 			Name: "test-name-2",
 			Content: map[string][]byte{
-				"type": []byte("test-type-2"),
-			},
-		},
-	}
-
-	if len(bindings.Filter(b, "test-type-3")) != 0 {
-		t.Errorf("incorrect number of matches")
-	}
-}
-
-func TestFilter_Single(t *testing.T) {
-	b := []bindings.Binding{
-		bindings.MapBinding{
-			Name: "test-name-1",
-			Content: map[string][]byte{
 				"type":     []byte("test-type-1"),
-				"provider": []byte("test-provider-1"),
+				"provider": []byte("test-provider-2"),
 			},
 		},
 		bindings.MapBinding{
-			Name: "test-name-2",
-			Content: map[string][]byte{
-				"type": []byte("test-type-2"),
-			},
-		},
-	}
-
-	if len(bindings.Filter(b, "test-type-1")) != 1 {
-		t.Errorf("incorrect number of matches")
-	}
-}
-
-func TestFilter_Multiple(t *testing.T) {
-	b := []bindings.Binding{
-		bindings.MapBinding{
-			Name: "test-name-1",
-			Content: map[string][]byte{
-				"type":     []byte("test-type-1"),
-				"provider": []byte("test-provider-1"),
-			},
-		},
-		bindings.MapBinding{
-			Name: "test-name-2",
-			Content: map[string][]byte{
-				"type": []byte("test-type-1"),
-			},
-		},
-	}
-
-	if len(bindings.Filter(b, "test-type-1")) != 2 {
-		t.Errorf("incorrect number of matches")
-	}
-}
-
-func TestFilterWithProvider_Empty(t *testing.T) {
-	b := []bindings.Binding{
-		bindings.MapBinding{
-			Name: "test-name-1",
-			Content: map[string][]byte{
-				"type":     []byte("test-type-1"),
-				"provider": []byte("test-provider-1"),
-			},
-		},
-		bindings.MapBinding{
-			Name: "test-name-2",
+			Name: "test-name-3",
 			Content: map[string][]byte{
 				"type":     []byte("test-type-2"),
 				"provider": []byte("test-provider-2"),
 			},
 		},
-		bindings.MapBinding{
-			Name: "test-name-3",
-			Content: map[string][]byte{
-				"type": []byte("test-type-3"),
-			},
-		},
 	}
 
-	if len(bindings.FilterWithProvider(b, "test-type-1", "test-provider-2")) != 0 {
+	if len(bindings.FilterWithProvider(b, "", "")) != 3 {
 		t.Errorf("incorrect number of matches")
 	}
 }
 
-func TestFilterWithProvider_Single(t *testing.T) {
+func Test_Filter_Type(t *testing.T) {
 	b := []bindings.Binding{
 		bindings.MapBinding{
 			Name: "test-name-1",
@@ -220,17 +155,18 @@ func TestFilterWithProvider_Single(t *testing.T) {
 		bindings.MapBinding{
 			Name: "test-name-3",
 			Content: map[string][]byte{
-				"type": []byte("test-type-3"),
+				"type":     []byte("test-type-2"),
+				"provider": []byte("test-provider-2"),
 			},
 		},
 	}
 
-	if len(bindings.FilterWithProvider(b, "test-type-1", "test-provider-2")) != 1 {
+	if len(bindings.FilterWithProvider(b, "test-type-1", "")) != 2 {
 		t.Errorf("incorrect number of matches")
 	}
 }
 
-func TestFilterWithProvider_Multiple(t *testing.T) {
+func Test_Filter_Provider(t *testing.T) {
 	b := []bindings.Binding{
 		bindings.MapBinding{
 			Name: "test-name-1",
@@ -243,18 +179,79 @@ func TestFilterWithProvider_Multiple(t *testing.T) {
 			Name: "test-name-2",
 			Content: map[string][]byte{
 				"type":     []byte("test-type-1"),
-				"provider": []byte("test-provider-1"),
+				"provider": []byte("test-provider-2"),
 			},
 		},
 		bindings.MapBinding{
 			Name: "test-name-3",
 			Content: map[string][]byte{
-				"type": []byte("test-type-3"),
+				"type":     []byte("test-type-2"),
+				"provider": []byte("test-provider-2"),
 			},
 		},
 	}
 
-	if len(bindings.FilterWithProvider(b, "test-type-1", "test-provider-1")) != 2 {
+	if len(bindings.FilterWithProvider(b, "", "test-provider-2")) != 2 {
+		t.Errorf("incorrect number of matches")
+	}
+}
+
+func Test_Filter_TypeAndProvider(t *testing.T) {
+	b := []bindings.Binding{
+		bindings.MapBinding{
+			Name: "test-name-1",
+			Content: map[string][]byte{
+				"type":     []byte("test-type-1"),
+				"provider": []byte("test-provider-1"),
+			},
+		},
+		bindings.MapBinding{
+			Name: "test-name-2",
+			Content: map[string][]byte{
+				"type":     []byte("test-type-1"),
+				"provider": []byte("test-provider-2"),
+			},
+		},
+		bindings.MapBinding{
+			Name: "test-name-3",
+			Content: map[string][]byte{
+				"type":     []byte("test-type-2"),
+				"provider": []byte("test-provider-2"),
+			},
+		},
+	}
+
+	if len(bindings.FilterWithProvider(b, "test-type-1", "test-provider-1")) != 1 {
+		t.Errorf("incorrect number of matches")
+	}
+}
+
+func Test_Filter_Overload(t *testing.T) {
+	b := []bindings.Binding{
+		bindings.MapBinding{
+			Name: "test-name-1",
+			Content: map[string][]byte{
+				"type":     []byte("test-type-1"),
+				"provider": []byte("test-provider-1"),
+			},
+		},
+		bindings.MapBinding{
+			Name: "test-name-2",
+			Content: map[string][]byte{
+				"type":     []byte("test-type-1"),
+				"provider": []byte("test-provider-2"),
+			},
+		},
+		bindings.MapBinding{
+			Name: "test-name-3",
+			Content: map[string][]byte{
+				"type":     []byte("test-type-2"),
+				"provider": []byte("test-provider-2"),
+			},
+		},
+	}
+
+	if len(bindings.Filter(b, "test-type-1")) != 2 {
 		t.Errorf("incorrect number of matches")
 	}
 }

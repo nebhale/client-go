@@ -24,7 +24,18 @@ import (
 	"github.com/nebhale/client-go/bindings"
 )
 
-func TestGet(t *testing.T) {
+func Test_Get_Missing(t *testing.T) {
+	b := bindings.MapBinding{
+		Name:    "test-name",
+		Content: map[string][]byte{},
+	}
+
+	if _, ok := bindings.Get(b, "test-missing-key"); ok {
+		t.Errorf("does not identify missing key")
+	}
+}
+
+func Test_Get_Valid(t *testing.T) {
 	b := bindings.MapBinding{
 		Name: "test-name",
 		Content: map[string][]byte{
@@ -39,7 +50,7 @@ func TestGet(t *testing.T) {
 	}
 }
 
-func TestGetProvider_InvalidKey(t *testing.T) {
+func Test_GetProvider_Missing(t *testing.T) {
 	b := bindings.MapBinding{
 		Name:    "test-name",
 		Content: map[string][]byte{},
@@ -50,7 +61,7 @@ func TestGetProvider_InvalidKey(t *testing.T) {
 	}
 }
 
-func TestGetProvider_ValidKey(t *testing.T) {
+func Test_GetProvider_Valid(t *testing.T) {
 	b := bindings.MapBinding{
 		Name: "test-name",
 		Content: map[string][]byte{
@@ -65,7 +76,7 @@ func TestGetProvider_ValidKey(t *testing.T) {
 	}
 }
 
-func TestGetType_InvalidBinding(t *testing.T) {
+func Test_GetType_Invalid(t *testing.T) {
 	b := bindings.MapBinding{
 		Name:    "test-name",
 		Content: map[string][]byte{},
@@ -77,7 +88,7 @@ func TestGetType_InvalidBinding(t *testing.T) {
 
 }
 
-func TestGetType_ValidBinding(t *testing.T) {
+func Test_GetType_Valid(t *testing.T) {
 	b := bindings.MapBinding{
 		Name: "test-name",
 		Content: map[string][]byte{
@@ -92,19 +103,7 @@ func TestGetType_ValidBinding(t *testing.T) {
 	}
 }
 
-func TestCacheBinding_Uncached(t *testing.T) {
-	s := &stubBinding{}
-	b := bindings.CacheBinding{Delegate: s}
-
-	if v, ok := b.GetAsBytes("test-key"); !ok || v == nil {
-		t.Errorf("did not retrieve value as bytes")
-	}
-	if s.getAsBytesCount != 1 {
-		t.Errorf("did not call delegate enough")
-	}
-}
-
-func TestCacheBinding_Missing(t *testing.T) {
+func Test_CacheBinding_Missing(t *testing.T) {
 	s := &stubBinding{}
 	b := bindings.CacheBinding{Delegate: s}
 
@@ -119,22 +118,22 @@ func TestCacheBinding_Missing(t *testing.T) {
 	}
 }
 
-func TestCacheBinding_Cached(t *testing.T) {
+func Test_CacheBinding_Valid(t *testing.T) {
 	s := &stubBinding{}
 	b := bindings.CacheBinding{Delegate: s}
 
-	if v, ok := b.GetAsBytes("test-key"); !ok || v == nil {
-		t.Errorf("did not retrieve value as bytes")
+	if v, ok := b.GetAsBytes("test-secret-key"); !ok || v == nil {
+		t.Errorf("did not retrieve value")
 	}
-	if v, ok := b.GetAsBytes("test-key"); !ok || v == nil {
-		t.Errorf("did not retrieve value as bytes")
+	if v, ok := b.GetAsBytes("test-secret-key"); !ok || v == nil {
+		t.Errorf("did not retrieve value")
 	}
 	if s.getAsBytesCount != 1 {
-		t.Errorf("did not call delegate enough")
+		t.Errorf("did not call delegate correctly")
 	}
 }
 
-func TestCacheBinding_GetName(t *testing.T) {
+func Test_CacheBinding_GetName(t *testing.T) {
 	s := &stubBinding{}
 	b := bindings.CacheBinding{Delegate: s}
 
@@ -145,11 +144,11 @@ func TestCacheBinding_GetName(t *testing.T) {
 		t.Errorf("did not retrieve name")
 	}
 	if s.getNameCount != 2 {
-		t.Errorf("did not call delegate enough")
+		t.Errorf("did not call delegate correctly")
 	}
 }
 
-func TestConfigTreeBinding_GetAsBytes_MissingKey(t *testing.T) {
+func Test_ConfigTreeBinding__Missing(t *testing.T) {
 	b := bindings.ConfigTreeBinding{
 		Root: filepath.Join("testdata", "test-k8s"),
 	}
@@ -159,7 +158,7 @@ func TestConfigTreeBinding_GetAsBytes_MissingKey(t *testing.T) {
 	}
 }
 
-func TestConfigTreeBinding_GetAsBytes_Directory(t *testing.T) {
+func Test_ConfigTreeBinding__Directory(t *testing.T) {
 	b := bindings.ConfigTreeBinding{
 		Root: filepath.Join("testdata", "test-k8s"),
 	}
@@ -169,7 +168,7 @@ func TestConfigTreeBinding_GetAsBytes_Directory(t *testing.T) {
 	}
 }
 
-func TestConfigTreeBinding_GetAsBytes_InvalidKey(t *testing.T) {
+func Test_ConfigTreeBinding_Invalid(t *testing.T) {
 	b := bindings.ConfigTreeBinding{
 		Root: filepath.Join("testdata", "test-k8s"),
 	}
@@ -179,7 +178,7 @@ func TestConfigTreeBinding_GetAsBytes_InvalidKey(t *testing.T) {
 	}
 }
 
-func TestConfigTreeBinding_GetAsBytes_ValidKey(t *testing.T) {
+func Test_ConfigTreeBinding_Valid(t *testing.T) {
 	b := bindings.ConfigTreeBinding{
 		Root: filepath.Join("testdata", "test-k8s"),
 	}
@@ -191,7 +190,7 @@ func TestConfigTreeBinding_GetAsBytes_ValidKey(t *testing.T) {
 	}
 }
 
-func TestConfigTreeBinding_GetName(t *testing.T) {
+func Test_ConfigTreeBinding_GetName(t *testing.T) {
 	b := bindings.ConfigTreeBinding{
 		Root: filepath.Join("testdata", "test-k8s"),
 	}
@@ -201,7 +200,7 @@ func TestConfigTreeBinding_GetName(t *testing.T) {
 	}
 }
 
-func TestMapBinding_GetAsBytes_MissingKey(t *testing.T) {
+func Test_MapBinding_Missing(t *testing.T) {
 	b := bindings.MapBinding{
 		Name: "test-name",
 		Content: map[string][]byte{
@@ -214,20 +213,18 @@ func TestMapBinding_GetAsBytes_MissingKey(t *testing.T) {
 	}
 }
 
-func TestMapBinding_GetAsBytes_InvalidKey(t *testing.T) {
+func Test_MapBinding_Invalid(t *testing.T) {
 	b := bindings.MapBinding{
-		Name: "test-name",
-		Content: map[string][]byte{
-			"test-secret-key": []byte("test-secret-value\n"),
-		},
+		Name:    "test-name",
+		Content: map[string][]byte{},
 	}
 
-	if _, ok := b.GetAsBytes("test^secret^key"); ok {
+	if _, ok := b.GetAsBytes("test^invalid^key"); ok {
 		t.Errorf("does not identify invalid key")
 	}
 }
 
-func TestMapBinding_GetAsBytes_ValidKey(t *testing.T) {
+func Test_MapBinding_Valid(t *testing.T) {
 	b := bindings.MapBinding{
 		Name: "test-name",
 		Content: map[string][]byte{
@@ -242,7 +239,7 @@ func TestMapBinding_GetAsBytes_ValidKey(t *testing.T) {
 	}
 }
 
-func TestMapBinding_GetName(t *testing.T) {
+func Test_MapBinding_GetName(t *testing.T) {
 	b := bindings.MapBinding{
 		Name:    "test-name",
 		Content: map[string][]byte{},
@@ -261,7 +258,7 @@ type stubBinding struct {
 func (s *stubBinding) GetAsBytes(key string) ([]byte, bool) {
 	s.getAsBytesCount++
 
-	if key == "test-key" {
+	if key == "test-secret-key" {
 		return []byte{}, true
 	}
 
