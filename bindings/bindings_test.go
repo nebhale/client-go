@@ -129,9 +129,15 @@ func Test_Filter_None(t *testing.T) {
 				"provider": []byte("test-provider-2"),
 			},
 		},
+		bindings.MapBinding{
+			Name: "test-name-4",
+			Content: map[string][]byte{
+				"type":     []byte("test-type-2"),
+			},
+		},
 	}
 
-	if len(bindings.FilterWithProvider(b, "", "")) != 3 {
+	if len(bindings.FilterWithProvider(b, "", "")) != 4 {
 		t.Errorf("incorrect number of matches")
 	}
 }
@@ -157,6 +163,12 @@ func Test_Filter_Type(t *testing.T) {
 			Content: map[string][]byte{
 				"type":     []byte("test-type-2"),
 				"provider": []byte("test-provider-2"),
+			},
+		},
+		bindings.MapBinding{
+			Name: "test-name-4",
+			Content: map[string][]byte{
+				"type":     []byte("test-type-2"),
 			},
 		},
 	}
@@ -189,6 +201,48 @@ func Test_Filter_Provider(t *testing.T) {
 				"provider": []byte("test-provider-2"),
 			},
 		},
+		bindings.MapBinding{
+			Name: "test-name-4",
+			Content: map[string][]byte{
+				"type":     []byte("test-type-2"),
+			},
+		},
+	}
+
+	if len(bindings.FilterWithProvider(b, "", "test-provider-2")) != 2 {
+		t.Errorf("incorrect number of matches")
+	}
+}
+
+func Test_Filter_ProviderMissing(t *testing.T) {
+	b := []bindings.Binding{
+		bindings.MapBinding{
+			Name: "test-name-1",
+			Content: map[string][]byte{
+				"type":     []byte("test-type-1"),
+				"provider": []byte("test-provider-1"),
+			},
+		},
+		bindings.MapBinding{
+			Name: "test-name-2",
+			Content: map[string][]byte{
+				"type":     []byte("test-type-1"),
+				"provider": []byte("test-provider-2"),
+			},
+		},
+		bindings.MapBinding{
+			Name: "test-name-3",
+			Content: map[string][]byte{
+				"type":     []byte("test-type-2"),
+				"provider": []byte("test-provider-2"),
+			},
+		},
+		bindings.MapBinding{
+			Name: "test-name-4",
+			Content: map[string][]byte{
+				"type":     []byte("test-type-2"),
+			},
+		},
 	}
 
 	if len(bindings.FilterWithProvider(b, "", "test-provider-2")) != 2 {
@@ -217,6 +271,12 @@ func Test_Filter_TypeAndProvider(t *testing.T) {
 			Content: map[string][]byte{
 				"type":     []byte("test-type-2"),
 				"provider": []byte("test-provider-2"),
+			},
+		},
+		bindings.MapBinding{
+			Name: "test-name-4",
+			Content: map[string][]byte{
+				"type":     []byte("test-type-2"),
 			},
 		},
 	}
