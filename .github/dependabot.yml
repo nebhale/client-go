@@ -2,15 +2,21 @@ version: 2
 updates:
 
 - package-ecosystem: github-actions
-  directory: "/"
+  directory: /
   schedule:
     interval: daily
+  labels:
+  - dependencies
+  - github-actions
   reviewers:
   - nebhale
 
 - package-ecosystem: gomod
-  directory: "/"
+  directory: /
   schedule:
     interval: daily
+  labels:
+  - dependencies
+  - gomod
   reviewers:
   - nebhale
