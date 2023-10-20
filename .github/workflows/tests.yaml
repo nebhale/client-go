@@ -18,4 +18,4 @@ jobs:
       run: go run github.com/kyoh86/richgo test -v ./... -coverprofile cover.out
       env:
         RICHGO_FORCE_COLOR: "1"
-    - uses: codecov/codecov-action@v2
+    - uses: codecov/codecov-action@v3
