@@ -14,8 +14,10 @@ jobs:
       with:
         go-version-file: go.mod
         cache-dependency-path: go.sum
+    - name: Install richgo
+      run: go install -ldflags="-s -w" github.com/kyoh86/richgo
     - name: Run Tests
-      run: go run github.com/kyoh86/richgo test -v ./... -coverprofile cover.out
+      run: richgo test -v ./... -coverprofile cover.out
       env:
         RICHGO_FORCE_COLOR: "1"
     - uses: codecov/codecov-action@v3
