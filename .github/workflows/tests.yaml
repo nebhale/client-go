@@ -20,4 +20,4 @@ jobs:
       run: richgo test -v ./... -coverprofile cover.out
       env:
         RICHGO_FORCE_COLOR: "1"
-    - uses: codecov/codecov-action@v3
+    - uses: codecov/codecov-action@v4
