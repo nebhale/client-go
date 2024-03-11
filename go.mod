@@ -2,7 +2,7 @@ module github.com/nebhale/client-go
 
 go 1.21.3
 
-require github.com/jackc/pgx/v4 v4.18.2
+require github.com/jackc/pgx/v4 v4.18.3
 
 require (
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
