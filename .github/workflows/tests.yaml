@@ -8,6 +8,9 @@ jobs:
   unit:
     name: Unit Test
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
     - uses: actions/checkout@v7
     - uses: actions/setup-go@v7
@@ -21,3 +24,5 @@ jobs:
       env:
         RICHGO_FORCE_COLOR: "1"
     - uses: codecov/codecov-action@v7
+      with:
+        use_oidc: true
