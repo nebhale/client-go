@@ -13,7 +13,7 @@
 import (
 	"context"
 	"fmt"
-	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v5"
 	"github.com/nebhale/client-go/bindings"
 	"os"
 )
