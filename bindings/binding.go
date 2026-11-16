@@ -19,7 +19,6 @@ package bindings
 import (
 	"fmt"
 	"os"
-	"path"
 	"path/filepath"
 	"strings"
 	"sync"
@@ -132,7 +131,7 @@ func (c ConfigTreeBinding) GetAsBytes(key string) ([]byte, bool) {
 }
 
 func (c ConfigTreeBinding) GetName() string {
-	return path.Base(c.Root)
+	return filepath.Base(c.Root)
 }
 
 // MapBinding is an implementation of the Binding interface that returns values from a map.
